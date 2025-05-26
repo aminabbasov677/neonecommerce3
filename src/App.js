@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import Particles from "@tsparticles/react";
-import { Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { CartProvider } from "./context/CartContext";
 import { ThemeProvider } from "./context/ThemeContext";
