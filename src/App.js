@@ -12,7 +12,8 @@ import {
 } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import Particles from "@tsparticles/react";
-import { loadFull } from "@tsparticles/engine";
+import { Engine } from "@tsparticles/engine";
+import { loadSlim } from "@tsparticles/slim";
 import { CartProvider } from "./context/CartContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -85,7 +86,7 @@ function AppContent() {
   };
 
   const particlesInit = async (engine) => {
-    await loadFull(engine);
+    await loadSlim(engine);
   };
 
   return React.createElement('div', { className: 'app-container' },
