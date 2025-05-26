@@ -5,6 +5,11 @@ export default defineConfig({
   plugins: [
     react({
       include: "**/*.{js,jsx}",
+      babel: {
+        plugins: [
+          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
+        ]
+      }
     })
   ],
   server: {
@@ -26,13 +31,21 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          ui: ['@heroicons/react', 'react-icons', 'framer-motion']
         },
       },
     },
   },
   optimizeDeps: {
-    exclude: ['lucide-react'],
-    include: ['react', 'react-dom', 'react-router-dom']
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei'
+    ]
   },
   esbuild: {
     loader: 'jsx',
