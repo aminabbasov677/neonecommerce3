@@ -11,8 +11,8 @@ import {
   useIsFetching,
 } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import Particles from "react-tsparticles";
-import { tsParticles } from "tsparticles-engine";
+import Particles from "@tsparticles/react";
+import { loadFull } from "@tsparticles/engine";
 import { CartProvider } from "./context/CartContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -84,8 +84,8 @@ function AppContent() {
     retina_detect: true,
   };
 
-  const particlesInit = async () => {
-    await tsParticles.load({ id: "tsparticles", options: particleOptions });
+  const particlesInit = async (engine) => {
+    await loadFull(engine);
   };
 
   return React.createElement('div', { className: 'app-container' },
