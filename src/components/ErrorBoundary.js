@@ -14,17 +14,13 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div className="error-boundary glass-effect">
-          <h2 className="gradient-text">Something went wrong.</h2>
-          <p>Please try refreshing the page.</p>
-          <button
-            className="btn-primary"
-            onClick={() => window.location.reload()}
-          >
-            Refresh
-          </button>
-        </div>
+      return React.createElement('div', { className: 'error-boundary glass-effect' },
+        React.createElement('h2', { className: 'gradient-text' }, 'Something went wrong.'),
+        React.createElement('p', null, 'Please try refreshing the page.'),
+        React.createElement('button', {
+          className: 'btn-primary',
+          onClick: () => window.location.reload()
+        }, 'Refresh')
       );
     }
     return this.props.children;

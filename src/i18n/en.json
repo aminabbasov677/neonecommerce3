@@ -1,0 +1,121 @@
+{
+  "app": {
+    "name": "Future Shop",
+    "tagline": "Shop from the future"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "home": {
+    "welcome": "Welcome to Future Shop",
+    "hero": {
+      "title": "The Future of Shopping",
+      "subtitle": "Experience next-generation e-commerce",
+      "cta": "Shop Now"
+    },
+    "featured": "Featured Products",
+    "categories": "Shop by Category",
+    "trending": "Trending Now"
+  },
+  "products": {
+    "title": "All Products",
+    "filter": "Filter",
+    "sort": "Sort",
+    "search": "Search products...",
+    "noResults": "No products found",
+    "addToCart": "Add to Cart",
+    "viewDetails": "View Details",
+    "categories": {
+      "all": "All Categories",
+      "electronics": "Electronics",
+      "jewelery": "Jewelry",
+      "men": "Men's Clothing",
+      "women": "Women's Clothing"
+    }
+  },
+  "product": {
+    "description": "Description",
+    "features": "Features",
+    "specifications": "Specifications",
+    "reviews": "Reviews",
+    "relatedProducts": "Related Products",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "quantity": "Quantity"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "proceedToCheckout": "Proceed to Checkout",
+    "summary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "applyCoupon": "Apply Coupon",
+    "couponCode": "Coupon Code",
+    "apply": "Apply"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "sameAsShipping": "Same as shipping address",
+    "paymentMethod": "Payment Method",
+    "placeOrder": "Place Order",
+    "orderSummary": "Order Summary"
+  },
+  "delivery": {
+    "title": "Delivery Tracking",
+    "orderId": "Order ID",
+    "status": "Status",
+    "estimatedDelivery": "Estimated Delivery",
+    "origin": "Origin",
+    "destination": "Destination",
+    "stages": {
+      "warehouse": "Warehouse Processing",
+      "transit": "In Transit",
+      "delivery": "Out for Delivery",
+      "delivered": "Delivered"
+    },
+    "controls": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "replay": "Replay"
+    }
+  },
+  "user": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "profile": {
+      "title": "My Profile",
+      "personalInfo": "Personal Information",
+      "addresses": "My Addresses",
+      "orders": "My Orders",
+      "paymentMethods": "Payment Methods",
+      "settings": "Settings"
+    }
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "faq": "FAQ",
+    "copyright": "© 2025 Future Shop. All rights reserved."
+  }
+}

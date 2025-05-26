@@ -61,90 +61,85 @@ function SignUp() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="signup-container"
-    >
-      <motion.div
-        initial={{ y: 20 }}
-        animate={{ y: 0 }}
-        className="signup-form"
-      >
-        <h1 className="signup-title">Sign Up</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className={errors.name ? "input-error" : ""}
-            />
-            {errors.name && <p className="error-text">{errors.name}</p>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? "input-error" : ""}
-            />
-            {errors.email && <p className="error-text">{errors.email}</p>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={errors.password ? "input-error" : ""}
-            />
-            {errors.password && <p className="error-text">{errors.password}</p>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={errors.confirmPassword ? "input-error" : ""}
-            />
-            {errors.confirmPassword && (
-              <p className="error-text">{errors.confirmPassword}</p>
-            )}
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            type="submit"
-            className="signup-btn"
-          >
-            Sign Up
-          </motion.button>
-        </form>
-        <p className="signup-footer">
-          Already have an account?{" "}
-          <a href="/signin" className="link">
-            Sign In
-          </a>
-        </p>
-      </motion.div>
-    </motion.div>
+  return React.createElement(
+    motion.div,
+    { className: 'signup-container' },
+    React.createElement(
+      motion.div,
+      { className: 'signup-form' },
+      React.createElement('h1', { className: 'signup-title' }, 'Sign Up'),
+      React.createElement(
+        'form',
+        { onSubmit: handleSubmit },
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement('label', { htmlFor: 'name' }, 'Name'),
+          React.createElement('input', {
+            type: 'text',
+            id: 'name',
+            name: 'name',
+            value: formData.name,
+            onChange: handleChange,
+            className: errors.name ? 'input-error' : '',
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement('label', { htmlFor: 'email' }, 'Email'),
+          React.createElement('input', {
+            type: 'email',
+            id: 'email',
+            name: 'email',
+            value: formData.email,
+            onChange: handleChange,
+            className: errors.email ? 'input-error' : '',
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement('label', { htmlFor: 'password' }, 'Password'),
+          React.createElement('input', {
+            type: 'password',
+            id: 'password',
+            name: 'password',
+            value: formData.password,
+            onChange: handleChange,
+            className: errors.password ? 'input-error' : '',
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement('label', { htmlFor: 'confirmPassword' }, 'Confirm Password'),
+          React.createElement('input', {
+            type: 'password',
+            id: 'confirmPassword',
+            name: 'confirmPassword',
+            value: formData.confirmPassword,
+            onChange: handleChange,
+            className: errors.confirmPassword ? 'input-error' : '',
+            required: true
+          })
+        ),
+        React.createElement(
+          motion.button,
+          {
+            whileHover: { scale: 1.05 },
+            whileTap: { scale: 0.95 },
+            type: 'submit',
+            className: 'signup-btn'
+          },
+          'Sign Up'
+        )
+      ),
+      React.createElement('p', { className: 'signup-footer' }, 'Already have an account? ', React.createElement('a', { href: '/signin', className: 'link' }, 'Sign In'))
+    )
   );
 }
 

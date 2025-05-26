@@ -19,17 +19,19 @@ function Cart() {
   };
 
   if (state.items.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="empty-cart"
-      >
-        <h2>Your cart is empty</h2>
-        <Link to="/" className="continue-shopping">
-          Continue Shopping
-        </Link>
-      </motion.div>
+    return React.createElement(
+      motion.div,
+      {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        className: 'empty-cart'
+      },
+      React.createElement('h2', null, 'Your cart is empty'),
+      React.createElement(
+        Link,
+        { to: '/', className: 'continue-shopping' },
+        'Continue Shopping'
+      )
     );
   }
 
@@ -107,6 +109,10 @@ function Cart() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="checkout-btn"
+          onClick={() => {
+            dispatch({ type: "CHECKOUT" });
+            toast.success("Order placed successfully! You can track your delivery in the tracking page.");
+          }}
         >
           Proceed to Checkout
         </motion.button>

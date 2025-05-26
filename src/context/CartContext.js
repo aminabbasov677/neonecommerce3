@@ -1,9 +1,37 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 // Initial state
 const initialState = {
   items: [],
   total: 0,
+  orders: [
+    {
+      id: 'DEMO-1234',
+      date: new Date().toISOString(),
+      status: 'shipped',
+      items: [
+        {
+          id: 1,
+          title: 'Quantum Processor X9000',
+          price: 299.99,
+          quantity: 1,
+          subtotal: 299.99,
+          image: 'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        }
+      ],
+      shipping: 15.00,
+      tax: 24.00,
+      total: 338.99,
+      shippingAddress: {
+        name: 'Demo User',
+        street: '1234 Future Avenue',
+        city: 'Tech City',
+        zipcode: '10101',
+        country: 'US'
+      },
+      origin: 'SG'
+    }
+  ],
 };
 
 // Action types
@@ -11,6 +39,8 @@ const ADD_TO_CART = "ADD_TO_CART";
 const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 const UPDATE_QUANTITY = "UPDATE_QUANTITY";
 const CLEAR_CART = "CLEAR_CART";
+const CHECKOUT = "CHECKOUT";
+const ADD_ORDER = "ADD_ORDER";
 
 // Reducer function
 const cartReducer = (state, action) => {
@@ -63,7 +93,36 @@ const cartReducer = (state, action) => {
     }
 
     case CLEAR_CART:
-      return initialState;
+      return {
+        ...state,
+        items: [],
+      };
+
+    case CHECKOUT:
+      const newOrder = {
+        id: Date.now(),
+        items: state.items,
+        total: state.items.reduce((total, item) => total + (item.price * item.quantity), 0),
+        trackingNumber: generateTrackingNumber(),
+        status: 'Order Placed',
+        date: new Date().toISOString(),
+      };
+      
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push(newOrder);
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      return {
+        ...state,
+        items: [],
+        orders: [...state.orders, newOrder],
+      };
+
+    case ADD_ORDER:
+      return {
+        ...state,
+        orders: [...state.orders, action.payload]
+      };
 
     default:
       return state;
@@ -73,17 +132,25 @@ const cartReducer = (state, action) => {
 // Create context
 const CartContext = createContext();
 
+const generateTrackingNumber = () => {
+  return 'TRK' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+};
+
 // Provider component
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   // Save to localStorage whenever state changes
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state));
   }, [state]);
 
+  useEffect(() => {
+    localStorage.setItem('orders', JSON.stringify(state.orders));
+  }, [state.orders]);
+
   // Load from localStorage on initial render
-  React.useEffect(() => {
+  useEffect(() => {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       const parsedCart = JSON.parse(savedCart);
@@ -94,10 +161,10 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  return (
-    <CartContext.Provider value={{ state, dispatch }}>
-      {children}
-    </CartContext.Provider>
+  return React.createElement(
+    CartContext.Provider,
+    { value: { state, dispatch } },
+    children
   );
 };
 

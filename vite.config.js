@@ -2,13 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  plugins: [
-    react({
-      include: "**/*.{js,jsx}"
-    })
-  ],
+  plugins: [react()],
   server: {
-    port: 3000,
+    port: 3001,
     open: true,
     cors: true,
     host: true,
@@ -27,7 +23,7 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           three: ['three', '@react-three/fiber', '@react-three/drei'],
-          ui: ['@heroicons/react', 'react-icons', 'framer-motion']
+          ui: ['framer-motion']
         },
       },
     },
@@ -39,18 +35,23 @@ export default defineConfig({
       'react-router-dom',
       'three',
       '@react-three/fiber',
-      '@react-three/drei'
+      '@react-three/drei',
+      'framer-motion'
     ]
-  },
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.jsx?$/,
-    exclude: [],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
       '@': '/src'
     }
+  },
+  esbuild: {
+    loader: 'jsx',
+    include: /src\/.*\.jsx?$/,
+    exclude: [],
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment',
+    target: 'esnext',
+    jsxInject: `import React from 'react'`
   }
 }) 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Added useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
@@ -9,7 +9,7 @@ import "./ProductDetail.css";
 function ProductDetail() {
   const { id } = useParams();
   const { dispatch } = useCart();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const {
     data: product,
@@ -29,79 +29,67 @@ function ProductDetail() {
   };
 
   const handleBack = () => {
-    navigate(-1); // Navigate to the previous page
+    navigate(-1);
   };
 
   if (isLoading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-      </div>
+    return React.createElement('div', { className: 'loading-container' },
+      React.createElement('div', { className: 'loading-spinner' })
     );
   }
 
   if (error) {
-    return (
-      <div className="error-container">
-        <p>Məhsul yüklənmədi. Zəhmət olmasa, yenidən cəhd edin.</p>
-      </div>
+    return React.createElement('div', { className: 'error-container' },
+      React.createElement('p', null, 'Məhsul yüklənmədi. Zəhmət olmasa, yenidən cəhd edin.')
     );
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="product-detail-container"
-    >
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={handleBack}
-        className="back-button"
-      >
-        Back
-      </motion.button>
-      <div className="product-detail">
-        <motion.div
-          initial={{ x: -50 }}
-          animate={{ x: 0 }}
-          className="product-image-container"
-        >
-          <img
-            src={product.image}
-            alt={product.title}
-            className="product-image"
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ x: 50 }}
-          animate={{ x: 0 }}
-          className="product-info"
-        >
-          <h1 className="product-title">{product.title}</h1>
-          <p className="product-category">{product.category}</p>
-          <p className="product-description">{product.description}</p>
-          <div className="product-price-container">
-            <span className="product-price">${product.price}</span>
-            <div className="product-rating">
-              <span>Reytinq: {product.rating.rate}</span>
-              <span>({product.rating.count} rəy)</span>
-            </div>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            Q
-            whileTap={{ scale: 0.95 }}
-            onClick={addToCart}
-            className="add-to-cart-button"
-          >
-            Add to Cart
-          </motion.button>
-        </motion.div>
-      </div>
-    </motion.div>
+  return React.createElement(motion.div, {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    className: 'product-detail-container'
+  },
+    React.createElement(motion.button, {
+      whileHover: { scale: 1.05 },
+      whileTap: { scale: 0.95 },
+      onClick: handleBack,
+      className: 'back-button'
+    }, 'Back'),
+    React.createElement('div', { className: 'product-detail' },
+      React.createElement(motion.div, {
+        initial: { x: -50 },
+        animate: { x: 0 },
+        className: 'product-image-container'
+      },
+        React.createElement('img', {
+          src: product.image,
+          alt: product.title,
+          className: 'product-image'
+        })
+      ),
+      React.createElement(motion.div, {
+        initial: { x: 50 },
+        animate: { x: 0 },
+        className: 'product-info'
+      },
+        React.createElement('h1', { className: 'product-title' }, product.title),
+        React.createElement('p', { className: 'product-category' }, product.category),
+        React.createElement('p', { className: 'product-description' }, product.description),
+        React.createElement('div', { className: 'product-price-container' },
+          React.createElement('span', { className: 'product-price' }, `$${product.price}`),
+          React.createElement('div', { className: 'product-rating' },
+            React.createElement('span', null, `Reytinq: ${product.rating.rate}`),
+            React.createElement('span', null, `(${product.rating.count} rəy)`)
+          )
+        ),
+        React.createElement(motion.button, {
+          whileHover: { scale: 1.05 },
+          whileTap: { scale: 0.95 },
+          onClick: addToCart,
+          className: 'add-to-cart-button'
+        }, 'Add to Cart')
+      )
+    )
   );
 }
 

@@ -149,12 +149,29 @@ function Navbar() {
                     >
                       My Orders
                     </Link>
-                    <button className="dropdown-item" onClick={handleSignOut}>
+                    <Link
+                      to="/tracking"
+                      className="dropdown-item"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                    >
+                      Track Delivery
+                    </Link>
+                    <button
+                      className="dropdown-item"
+                      onClick={handleSignOut}
+                    >
                       Sign Out
                     </button>
                   </>
                 ) : (
                   <>
+                    <Link
+                      to="/login"
+                      className="dropdown-item"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                    >
+                      Login
+                    </Link>
                     <Link
                       to="/signup"
                       className="dropdown-item"
@@ -162,76 +179,105 @@ function Navbar() {
                     >
                       Sign Up
                     </Link>
-                    <Link
-                      to="/signin"
-                      className="dropdown-item"
-                      onClick={() => setIsProfileDropdownOpen(false)}
-                    >
-                      Sign In
-                    </Link>
                   </>
                 )}
               </motion.div>
             )}
           </div>
-          <Link
-            to="/cart"
-            className="nav-icon cart-icon"
-            onClick={() => setIsMobilePopupOpen(false)}
-          >
+
+          <Link to="/cart" className="nav-icon cart-icon">
             <ShoppingCartIcon className="icon" />
             {state.items.length > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="cart-badge"
-              >
-                {state.items.reduce((acc, item) => acc + item.quantity, 0)}
-              </motion.span>
+              <span className="cart-count">{state.items.length}</span>
             )}
           </Link>
-          <button onClick={toggleTheme} className="neon-button theme-toggle">
-            {theme === "light" ? "Dark" : "Light"} Mode
-          </button>
+
           <button
+            className="nav-icon menu-icon"
             onClick={toggleMobilePopup}
-            className="neon-button mobile-menu-toggle"
           >
             <Bars3Icon className="icon" />
           </button>
-          {isMobilePopupOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mobile-popup"
-              ref={mobilePopupRef}
-            >
-              <NavLink
-                to="/"
-                className="popup-item"
-                end
-                onClick={() => setIsMobilePopupOpen(false)}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/about"
-                className="popup-item"
-                onClick={() => setIsMobilePopupOpen(false)}
-              >
-                About
-              </NavLink>
-              <NavLink
-                to="/contact"
-                className="popup-item"
-                onClick={() => setIsMobilePopupOpen(false)}
-              >
-                Contact
-              </NavLink>
-            </motion.div>
-          )}
         </div>
       </div>
+
+      {isMobilePopupOpen && (
+        <motion.div
+          ref={mobilePopupRef}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mobile-popup"
+        >
+          <div className="mobile-links">
+            <NavLink
+              to="/"
+              className="mobile-link"
+              onClick={() => setIsMobilePopupOpen(false)}
+              end
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/about"
+              className="mobile-link"
+              onClick={() => setIsMobilePopupOpen(false)}
+            >
+              About
+            </NavLink>
+            <NavLink
+              to="/contact"
+              className="mobile-link"
+              onClick={() => setIsMobilePopupOpen(false)}
+            >
+              Contact
+            </NavLink>
+            {user ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="mobile-link"
+                  onClick={() => setIsMobilePopupOpen(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  to="/tracking"
+                  className="mobile-link"
+                  onClick={() => setIsMobilePopupOpen(false)}
+                >
+                  Track Delivery
+                </Link>
+                <button
+                  className="mobile-link"
+                  onClick={() => {
+                    handleSignOut();
+                    setIsMobilePopupOpen(false);
+                  }}
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="mobile-link"
+                  onClick={() => setIsMobilePopupOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="mobile-link"
+                  onClick={() => setIsMobilePopupOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </motion.div>
+      )}
     </motion.nav>
   );
 }

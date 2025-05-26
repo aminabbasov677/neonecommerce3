@@ -144,268 +144,307 @@ const Search = () => {
   };
 
   if (loading) {
-    return (
-      <div className="loading-container glass-effect">
-        <div className="loading-spinner"></div>
-        <p className="neon-effect">Loading products...</p>
-      </div>
+    return React.createElement(
+      'div',
+      { className: 'loading-container glass-effect' },
+      React.createElement('div', { className: 'loading-spinner' }),
+      React.createElement('p', { className: 'neon-effect' }, 'Loading products...')
     );
   }
 
   if (error) {
-    return (
-      <div className="error-container glass-effect">
-        <p className="neon-effect">Error: {error.message}</p>
-      </div>
+    return React.createElement(
+      'div',
+      { className: 'error-container glass-effect' },
+      React.createElement(
+        'p',
+        { className: 'neon-effect' },
+        'Error: ',
+        error.message
+      )
     );
   }
 
-  return (
-    <div className="home-container">
-      <div className="flex justify-between items-center mb-4">
-        <motion.h1
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          className="page-title gradient-text"
-        >
-          {query ? `Search Results for "${query}"` : "Search Products"}
-        </motion.h1>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="filter-btn"
-          onClick={() => setIsFilterOpen(true)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 4a1 1 0 011-1h16a1 1 0 011 1m-1 4H5m8 4H5m8 4H5"
-            />
-          </svg>
-          Filters
-        </motion.button>
-      </div>
-
-      <AnimatePresence>
-        {isFilterOpen && (
-          <motion.div
-            className="filter-modal glass-effect"
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <div className="filter-content">
-              <motion.h2
-                className="filter-title neon-effect"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                Filter Products
-              </motion.h2>
-
-              {/* Price Range */}
-              <div className="filter-section">
-                <h3 className="filter-subtitle">Price Range</h3>
-                <div className="flex gap-4">
-                  <input
-                    type="number"
-                    placeholder="Min Price"
-                    value={filters.minPrice}
-                    onChange={(e) =>
-                      setFilters({ ...filters, minPrice: e.target.value })
-                    }
-                    className="filter-input"
-                    min="0"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max Price"
-                    value={filters.maxPrice}
-                    onChange={(e) =>
-                      setFilters({ ...filters, maxPrice: e.target.value })
-                    }
-                    className="filter-input"
-                    min="0"
-                  />
-                </div>
-              </div>
-
-              {/* Sort Order */}
-              <div className="filter-section">
-                <h3 className="filter-subtitle">Sort By Price</h3>
-                <div className="flex sort-order-container">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="sortOrder"
-                      value="asc"
-                      checked={filters.sortOrder === "asc"}
-                      onChange={(e) =>
-                        setFilters({ ...filters, sortOrder: e.target.value })
-                      }
-                      className="filter-radio"
-                    />
-                    Ascending
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="sortOrder"
-                      value="desc"
-                      checked={filters.sortOrder === "desc"}
-                      onChange={(e) =>
-                        setFilters({ ...filters, sortOrder: e.target.value })
-                      }
-                      className="filter-radio"
-                    />
-                    Descending
-                  </label>
-                </div>
-              </div>
-
-              {/* Categories */}
-              <div className="filter-section">
-                <h3 className="filter-subtitle">Categories</h3>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <motion.label
-                      key={category}
-                      className="filter-checkbox-label"
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={filters.categories.includes(category)}
-                        onChange={() => handleCategoryChange(category)}
-                        className="filter-checkbox"
-                      />
-                      {category}
-                    </motion.label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="filter-buttons">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="filter-save-btn"
-                  onClick={applyFilters}
-                >
-                  Save
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="filter-reset-btn"
-                  onClick={resetFilters}
-                >
-                  Reset
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="filter-close-btn"
-                  onClick={() => setIsFilterOpen(false)}
-                >
-                  Close
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {filteredResults.length === 0 ? (
-        <div className="no-results glass-effect">
-          <p className="neon-effect">
-            {query
-              ? "No products found matching your search or filters."
-              : "Enter a search term to find products."}
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="products-grid">
-            {currentProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                whileHover={{
-                  y: -10,
-                  scale: 1.05,
-                  boxShadow: "0 0 20px var(--neon-pink)",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="product-card"
-              >
-                <div className="product-image">
-                  <Link to={`/product/${product.id}`}>
-                    <img src={product.image} alt={product.title} />
-                  </Link>
-                </div>
-                <div className="content">
-                  <Link to={`/product/${product.id}`}>
-                    <h3 className="product-title neon-effect">
-                      {product.title}
-                    </h3>
-                    <p className="product-price">${product.price.toFixed(2)}</p>
-                  </Link>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => addToCart(product)}
-                    className="add-to-cart-btn btn-primary"
-                  >
-                    Add to Cart
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          {totalPages > 1 && (
-            <div className="pagination-container">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className={`pagination-btn ${
-                  currentPage === 1 ? "disabled" : ""
-                }`}
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </motion.button>
-              <span className="pagination-current">
-                {currentPage} / {totalPages}
-              </span>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className={`pagination-btn ${
-                  currentPage === totalPages ? "disabled" : ""
-                }`}
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </motion.button>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+  return React.createElement(
+    'div',
+    { className: 'home-container' },
+    React.createElement(
+      'div',
+      { className: 'flex justify-between items-center mb-4' },
+      React.createElement(
+        motion.h1,
+        {
+          initial: { y: -20 },
+          animate: { y: 0 },
+          className: 'page-title gradient-text'
+        },
+        query ? `Search Results for "${query}"` : 'Search Products'
+      ),
+      React.createElement(
+        motion.button,
+        {
+          whileHover: { scale: 1.1 },
+          whileTap: { scale: 0.9 },
+          className: 'filter-btn',
+          onClick: () => setIsFilterOpen(true)
+        },
+        React.createElement(
+          'svg',
+          {
+            xmlns: 'http://www.w3.org/2000/svg',
+            className: 'h-6 w-6',
+            fill: 'none',
+            viewBox: '0 0 24 24',
+            stroke: 'currentColor'
+          },
+          React.createElement('path', {
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
+            strokeWidth: 2,
+            d: 'M3 4a1 1 0 011-1h16a1 1 0 011 1m-1 4H5m8 4H5m8 4H5'
+          })
+        ),
+        'Filters'
+      )
+    ),
+    React.createElement(
+      AnimatePresence,
+      null,
+      isFilterOpen && React.createElement(
+        motion.div,
+        {
+          className: 'filter-modal glass-effect',
+          initial: { opacity: 0, y: '-100%' },
+          animate: { opacity: 1, y: 0 },
+          exit: { opacity: 0, y: '-100%' },
+          transition: { type: 'spring', stiffness: 300, damping: 20 }
+        },
+        React.createElement(
+          'div',
+          { className: 'filter-content' },
+          React.createElement(
+            motion.h2,
+            {
+              className: 'filter-title neon-effect',
+              initial: { opacity: 0 },
+              animate: { opacity: 1 }
+            },
+            'Filter Products'
+          ),
+          React.createElement(
+            'div',
+            { className: 'filter-section' },
+            React.createElement('h3', { className: 'filter-subtitle' }, 'Price Range'),
+            React.createElement(
+              'div',
+              { className: 'flex gap-4' },
+              React.createElement('input', {
+                type: 'number',
+                placeholder: 'Min Price',
+                value: filters.minPrice,
+                onChange: (e) => setFilters({ ...filters, minPrice: e.target.value }),
+                className: 'filter-input',
+                min: '0'
+              }),
+              React.createElement('input', {
+                type: 'number',
+                placeholder: 'Max Price',
+                value: filters.maxPrice,
+                onChange: (e) => setFilters({ ...filters, maxPrice: e.target.value }),
+                className: 'filter-input',
+                min: '0'
+              })
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'filter-section' },
+            React.createElement('h3', { className: 'filter-subtitle' }, 'Sort By Price'),
+            React.createElement(
+              'div',
+              { className: 'flex sort-order-container' },
+              React.createElement(
+                'label',
+                { className: 'flex items-center gap-2' },
+                React.createElement('input', {
+                  type: 'radio',
+                  name: 'sortOrder',
+                  value: 'asc',
+                  checked: filters.sortOrder === 'asc',
+                  onChange: (e) => setFilters({ ...filters, sortOrder: e.target.value }),
+                  className: 'filter-radio'
+                }),
+                'Ascending'
+              ),
+              React.createElement(
+                'label',
+                { className: 'flex items-center gap-2' },
+                React.createElement('input', {
+                  type: 'radio',
+                  name: 'sortOrder',
+                  value: 'desc',
+                  checked: filters.sortOrder === 'desc',
+                  onChange: (e) => setFilters({ ...filters, sortOrder: e.target.value }),
+                  className: 'filter-radio'
+                }),
+                'Descending'
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'filter-section' },
+            React.createElement('h3', { className: 'filter-subtitle' }, 'Categories'),
+            React.createElement(
+              'div',
+              { className: 'flex flex-wrap gap-2' },
+              categories.map((category) => React.createElement(
+                motion.label,
+                {
+                  key: category,
+                  className: 'filter-checkbox-label',
+                  whileHover: { scale: 1.05 }
+                },
+                React.createElement('input', {
+                  type: 'checkbox',
+                  checked: filters.categories.includes(category),
+                  onChange: () => handleCategoryChange(category),
+                  className: 'filter-checkbox'
+                }),
+                category
+              ))
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'filter-buttons' },
+            React.createElement(
+              motion.button,
+              {
+                whileHover: { scale: 1.05 },
+                whileTap: { scale: 0.95 },
+                className: 'filter-save-btn',
+                onClick: applyFilters
+              },
+              'Save'
+            ),
+            React.createElement(
+              motion.button,
+              {
+                whileHover: { scale: 1.05 },
+                whileTap: { scale: 0.95 },
+                className: 'filter-reset-btn',
+                onClick: resetFilters
+              },
+              'Reset'
+            ),
+            React.createElement(
+              motion.button,
+              {
+                whileHover: { scale: 1.05 },
+                whileTap: { scale: 0.95 },
+                className: 'filter-close-btn',
+                onClick: () => setIsFilterOpen(false)
+              },
+              'Close'
+            )
+          )
+        )
+      )
+    ),
+    filteredResults.length === 0 ? React.createElement(
+      'div',
+      { className: 'no-results glass-effect' },
+      React.createElement(
+        'p',
+        { className: 'neon-effect' },
+        query ? 'No products found matching your search or filters.' : 'Enter a search term to find products.'
+      )
+    ) : React.createElement(
+      React.Fragment,
+      null,
+      React.createElement(
+        'div',
+        { className: 'products-grid' },
+        currentProducts.map((product) => React.createElement(
+          motion.div,
+          {
+            key: product.id,
+            initial: { opacity: 0, scale: 0.8, y: 50 },
+            animate: { opacity: 1, scale: 1, y: 0 },
+            whileHover: {
+              y: -10,
+              scale: 1.05,
+              boxShadow: '0 0 20px var(--neon-pink)'
+            },
+            transition: { type: 'spring', stiffness: 300, damping: 20 },
+            className: 'product-card'
+          },
+          React.createElement(
+            'div',
+            { className: 'product-image' },
+            React.createElement(
+              Link,
+              { to: `/product/${product.id}` },
+              React.createElement('img', { src: product.image, alt: product.title })
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'content' },
+            React.createElement(
+              Link,
+              { to: `/product/${product.id}` },
+              React.createElement('h3', { className: 'product-title neon-effect' }, product.title),
+              React.createElement('p', { className: 'product-price' }, '$', product.price.toFixed(2))
+            ),
+            React.createElement(
+              motion.button,
+              {
+                whileHover: { scale: 1.05 },
+                whileTap: { scale: 0.95 },
+                onClick: () => addToCart(product),
+                className: 'add-to-cart-btn btn-primary'
+              },
+              'Add to Cart'
+            )
+          )
+        ))
+      ),
+      totalPages > 1 && React.createElement(
+        'div',
+        { className: 'pagination-container' },
+        React.createElement(
+          motion.button,
+          {
+            whileHover: { scale: 1.1 },
+            whileTap: { scale: 0.9 },
+            className: `pagination-btn ${currentPage === 1 ? 'disabled' : ''}`,
+            onClick: () => handlePageChange(currentPage - 1),
+            disabled: currentPage === 1
+          },
+          'Previous'
+        ),
+        React.createElement(
+          'span',
+          { className: 'pagination-current' },
+          currentPage,
+          ' / ',
+          totalPages
+        ),
+        React.createElement(
+          motion.button,
+          {
+            whileHover: { scale: 1.1 },
+            whileTap: { scale: 0.9 },
+            className: `pagination-btn ${currentPage === totalPages ? 'disabled' : ''}`,
+            onClick: () => handlePageChange(currentPage + 1),
+            disabled: currentPage === totalPages
+          },
+          'Next'
+        )
+      )
+    )
   );
 };
 

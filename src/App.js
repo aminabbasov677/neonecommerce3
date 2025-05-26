@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Link,
 } from "react-router-dom";
 import {
   QueryClient,
@@ -29,6 +30,7 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Search from "./pages/Search";
+import DeliveryTracker from "./components/delivery/DeliveryTracker";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -107,7 +109,9 @@ function AppContent() {
           React.createElement(Route, { path: '/signup', element: React.createElement(SignUp) }),
           React.createElement(Route, { path: '/signin', element: React.createElement(SignIn) }),
           React.createElement(Route, { path: '/product/:id', element: React.createElement(ProductDetail) }),
-          React.createElement(Route, { path: '/search', element: React.createElement(Search) })
+          React.createElement(Route, { path: '/search', element: React.createElement(Search) }),
+          React.createElement(Route, { path: '/tracking', element: React.createElement(DeliveryTracker) }),
+          React.createElement(Route, { path: '/tracking/:trackingNumber', element: React.createElement(DeliveryTracker) })
         )
       )
     ),

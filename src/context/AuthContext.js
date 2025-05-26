@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }) => {
     toast.success("Signed out successfully!");
   };
 
-  return (
-    <AuthContext.Provider value={{ user, signUp, signIn, signOut }}>
-      {children}
-    </AuthContext.Provider>
+  return React.createElement(
+    AuthContext.Provider,
+    { value: { user, signUp, signIn, signOut } },
+    children
   );
 };
 

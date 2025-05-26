@@ -10,10 +10,10 @@ export function ThemeProvider({ children }) {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  return React.createElement(
+    ThemeContext.Provider,
+    { value: { theme, toggleTheme } },
+    children
   );
 }
 

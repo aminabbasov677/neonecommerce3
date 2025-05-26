@@ -1,0 +1,121 @@
+{
+  "app": {
+    "name": "Gələcək Mağaza",
+    "tagline": "Gələcəkdən alış-veriş edin"
+  },
+  "nav": {
+    "home": "Ana Səhifə",
+    "products": "Məhsullar",
+    "cart": "Səbət",
+    "profile": "Profil",
+    "login": "Daxil ol",
+    "register": "Qeydiyyat",
+    "logout": "Çıxış"
+  },
+  "home": {
+    "welcome": "Gələcək Mağazaya Xoş Gəlmisiniz",
+    "hero": {
+      "title": "Alış-verişin Gələcəyi",
+      "subtitle": "Növbəti nəsil e-ticarət təcrübəsi",
+      "cta": "İndi Alış-veriş Edin"
+    },
+    "featured": "Seçilmiş Məhsullar",
+    "categories": "Kateqoriyaya görə alış-veriş",
+    "trending": "Trend Məhsullar"
+  },
+  "products": {
+    "title": "Bütün Məhsullar",
+    "filter": "Filtr",
+    "sort": "Sırala",
+    "search": "Məhsulları axtar...",
+    "noResults": "Məhsul tapılmadı",
+    "addToCart": "Səbətə Əlavə Et",
+    "viewDetails": "Ətraflı Bax",
+    "categories": {
+      "all": "Bütün Kateqoriyalar",
+      "electronics": "Elektronika",
+      "jewelery": "Zərgərlik",
+      "men": "Kişi Geyimləri",
+      "women": "Qadın Geyimləri"
+    }
+  },
+  "product": {
+    "description": "Təsvir",
+    "features": "Xüsusiyyətlər",
+    "specifications": "Spesifikasiyalar",
+    "reviews": "Rəylər",
+    "relatedProducts": "Oxşar Məhsullar",
+    "inStock": "Stokda var",
+    "outOfStock": "Stokda yoxdur",
+    "quantity": "Miqdar"
+  },
+  "cart": {
+    "title": "Alış-veriş Səbəti",
+    "empty": "Səbətiniz boşdur",
+    "continueShopping": "Alış-verişə Davam Et",
+    "proceedToCheckout": "Sifarişi Tamamla",
+    "summary": "Sifariş Xülasəsi",
+    "subtotal": "Ara cəm",
+    "shipping": "Çatdırılma",
+    "tax": "Vergi",
+    "total": "Ümumi",
+    "applyCoupon": "Kupon Tətbiq Et",
+    "couponCode": "Kupon Kodu",
+    "apply": "Tətbiq Et"
+  },
+  "checkout": {
+    "title": "Sifarişi Tamamla",
+    "shippingAddress": "Çatdırılma Ünvanı",
+    "billingAddress": "Faktura Ünvanı",
+    "sameAsShipping": "Çatdırılma ünvanı ilə eyni",
+    "paymentMethod": "Ödəniş Üsulu",
+    "placeOrder": "Sifariş Ver",
+    "orderSummary": "Sifariş Xülasəsi"
+  },
+  "delivery": {
+    "title": "Çatdırılma İzləmə",
+    "orderId": "Sifariş ID",
+    "status": "Status",
+    "estimatedDelivery": "Təxmini Çatdırılma",
+    "origin": "Mənşə",
+    "destination": "Təyinat",
+    "stages": {
+      "warehouse": "Anbar Emalı",
+      "transit": "Tranzitdə",
+      "delivery": "Çatdırılmaya Hazır",
+      "delivered": "Çatdırıldı"
+    },
+    "controls": {
+      "pause": "Fasilə",
+      "resume": "Davam Et",
+      "replay": "Təkrarla"
+    }
+  },
+  "user": {
+    "login": "Daxil ol",
+    "register": "Qeydiyyat",
+    "email": "E-poçt",
+    "password": "Şifrə",
+    "confirmPassword": "Şifrəni Təsdiqlə",
+    "name": "Tam Ad",
+    "forgotPassword": "Şifrəni Unutmusunuz?",
+    "noAccount": "Hesabınız yoxdur?",
+    "haveAccount": "Artıq hesabınız var?",
+    "profile": {
+      "title": "Mənim Profilim",
+      "personalInfo": "Şəxsi Məlumat",
+      "addresses": "Ünvanlarım",
+      "orders": "Sifarişlərim",
+      "paymentMethods": "Ödəniş Üsulları",
+      "settings": "Tənzimləmələr"
+    }
+  },
+  "footer": {
+    "about": "Haqqımızda",
+    "contact": "Əlaqə",
+    "terms": "Şərtlər və Qaydalar",
+    "privacy": "Məxfilik Siyasəti",
+    "faq": "FAQ",
+    "copyright": "© 2025 Gələcək Mağaza. Bütün hüquqlar qorunur."
+  }
+}

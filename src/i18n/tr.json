@@ -1,0 +1,121 @@
+{
+  "app": {
+    "name": "Gelecek Mağaza",
+    "tagline": "Gelecekten alışveriş yapın"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "products": "Ürünler",
+    "cart": "Sepet",
+    "profile": "Profil",
+    "login": "Giriş",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış"
+  },
+  "home": {
+    "welcome": "Gelecek Mağazaya Hoş Geldiniz",
+    "hero": {
+      "title": "Alışverişin Geleceği",
+      "subtitle": "Yeni nesil e-ticaret deneyimi",
+      "cta": "Hemen Alışveriş Yap"
+    },
+    "featured": "Öne Çıkan Ürünler",
+    "categories": "Kategoriye Göre Alışveriş",
+    "trending": "Trend Ürünler"
+  },
+  "products": {
+    "title": "Tüm Ürünler",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "search": "Ürünleri ara...",
+    "noResults": "Ürün bulunamadı",
+    "addToCart": "Sepete Ekle",
+    "viewDetails": "Detayları Gör",
+    "categories": {
+      "all": "Tüm Kategoriler",
+      "electronics": "Elektronik",
+      "jewelery": "Mücevher",
+      "men": "Erkek Giyim",
+      "women": "Kadın Giyim"
+    }
+  },
+  "product": {
+    "description": "Açıklama",
+    "features": "Özellikler",
+    "specifications": "Teknik Özellikler",
+    "reviews": "Yorumlar",
+    "relatedProducts": "Benzer Ürünler",
+    "inStock": "Stokta var",
+    "outOfStock": "Stokta yok",
+    "quantity": "Miktar"
+  },
+  "cart": {
+    "title": "Alışveriş Sepeti",
+    "empty": "Sepetiniz boş",
+    "continueShopping": "Alışverişe Devam Et",
+    "proceedToCheckout": "Ödemeye Geç",
+    "summary": "Sipariş Özeti",
+    "subtotal": "Ara Toplam",
+    "shipping": "Kargo",
+    "tax": "Vergi",
+    "total": "Toplam",
+    "applyCoupon": "Kupon Uygula",
+    "couponCode": "Kupon Kodu",
+    "apply": "Uygula"
+  },
+  "checkout": {
+    "title": "Ödeme",
+    "shippingAddress": "Teslimat Adresi",
+    "billingAddress": "Fatura Adresi",
+    "sameAsShipping": "Teslimat adresi ile aynı",
+    "paymentMethod": "Ödeme Yöntemi",
+    "placeOrder": "Siparişi Tamamla",
+    "orderSummary": "Sipariş Özeti"
+  },
+  "delivery": {
+    "title": "Teslimat Takibi",
+    "orderId": "Sipariş ID",
+    "status": "Durum",
+    "estimatedDelivery": "Tahmini Teslimat",
+    "origin": "Çıkış Noktası",
+    "destination": "Varış Noktası",
+    "stages": {
+      "warehouse": "Depo İşlemi",
+      "transit": "Taşıma Sürecinde",
+      "delivery": "Dağıtımda",
+      "delivered": "Teslim Edildi"
+    },
+    "controls": {
+      "pause": "Durdur",
+      "resume": "Devam Et",
+      "replay": "Tekrarla"
+    }
+  },
+  "user": {
+    "login": "Giriş",
+    "register": "Kayıt Ol",
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirmPassword": "Şifreyi Onayla",
+    "name": "Tam İsim",
+    "forgotPassword": "Şifremi Unuttum?",
+    "noAccount": "Hesabınız yok mu?",
+    "haveAccount": "Zaten hesabınız var mı?",
+    "profile": {
+      "title": "Profilim",
+      "personalInfo": "Kişisel Bilgiler",
+      "addresses": "Adreslerim",
+      "orders": "Siparişlerim",
+      "paymentMethods": "Ödeme Yöntemlerim",
+      "settings": "Ayarlar"
+    }
+  },
+  "footer": {
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "terms": "Şartlar ve Koşullar",
+    "privacy": "Gizlilik Politikası",
+    "faq": "SSS",
+    "copyright": "© 2025 Gelecek Mağaza. Tüm hakları saklıdır."
+  }
+}
