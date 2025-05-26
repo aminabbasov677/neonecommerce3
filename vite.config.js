@@ -10,13 +10,29 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    cors: true,
+    host: true,
+    strictPort: true,
+    hmr: {
+      overlay: true
+    }
   },
   build: {
     outDir: 'dist',
     sourcemap: true,
+    target: 'esnext',
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
+    },
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['react', 'react-dom', 'react-router-dom']
   },
   esbuild: {
     loader: 'jsx',
@@ -24,6 +40,9 @@ export default defineConfig({
     exclude: [],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      '@': '/src'
+    }
   }
 }) 
