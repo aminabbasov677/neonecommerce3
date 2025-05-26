@@ -4,12 +4,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     react({
-      include: "**/*.{js,jsx}",
-      babel: {
-        plugins: [
-          ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
-        ]
-      }
+      include: "**/*.{js,jsx}"
     })
   ],
   server: {
