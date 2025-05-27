@@ -2,12 +2,10 @@ import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Line } from '@react-three/drei';
 
-const RouteLines = ({ origin, destination, progress, totalDuration, stageDurations }) => {
+const RouteLines = ({ origin, destination, progress }) => {
   const lineRef = useRef();
   
-  // Get country position on globe
   const getCountryPosition = (country) => {
-    // Simplified country positions (longitude, latitude)
     const positions = {
       'US': [0, 0, 10],
       'SG': [5, 0, 8],
@@ -34,12 +32,10 @@ const RouteLines = ({ origin, destination, progress, totalDuration, stageDuratio
     return positions[country] || [0, 0, 10];
   };
   
-  // Calculate route points
   const getRoutePoints = () => {
     const originPos = getCountryPosition(origin);
     const destPos = getCountryPosition(destination);
     
-    // Create a curved path between origin and destination
     const points = [];
     const segments = 50;
     
@@ -54,7 +50,6 @@ const RouteLines = ({ origin, destination, progress, totalDuration, stageDuratio
     return points;
   };
   
-  // Calculate visible points based on progress
   const getVisiblePoints = () => {
     const points = getRoutePoints();
     const visibleCount = Math.floor((progress / 100) * points.length);
@@ -79,4 +74,4 @@ const RouteLines = ({ origin, destination, progress, totalDuration, stageDuratio
   );
 };
 
-export default RouteLines; 
+export default RouteLines;

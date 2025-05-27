@@ -23,4 +23,4 @@ const Globe = () => {
   );
 };
 
-export default Globe; 
+export default Globe;

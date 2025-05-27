@@ -1,214 +1,207 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei';
+import { Pause, Play, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Package, ArrowLeft, Map } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import './DeliveryTrackingPage.css';
 
-import DeliveryTracker from '../components/delivery/DeliveryTracker';
+import Globe from '../components/delivery/Globe';
+import Delivery from '../components/delivery/Delivery';
+import RouteLines from '../components/delivery/RouteLines';
 
 const DeliveryTrackingPage = () => {
   const { t } = useTranslation();
-  const { orderId } = useParams();
-  const { state } = useCart();
-  const [order, setOrder] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { trackingNumber } = useParams();
+  const [stage, setStage] = useState('warehouse');
+  const [progress, setProgress] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [cameraTarget, setCameraTarget] = useState([0, 0, 0]);
+  const [cameraPosition, setCameraPosition] = useState([0, 20, 30]);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  
+  const animationRef = useRef(null);
+  const startTimeRef = useRef(Date.now());
+  const pausedTimeRef = useRef(0);
+  
+  const totalDuration = 75; // Total seconds (30 + 40 + 5)
+  const stageDurations = {
+    warehouse: 30,
+    transit: 40,
+    delivery: 5
+  };
+
+  // Demo data - in a real app this would come from an API
+  const demoDelivery = {
+    origin: 'SG',
+    destination: 'US',
+    status: 'in_transit',
+    estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+  };
   
   useEffect(() => {
-    // Find order in cart context
-    const foundOrder = state.orders.find(o => o.id === orderId);
+    startTimeRef.current = Date.now();
+    animate();
     
-    if (foundOrder) {
-      setOrder(foundOrder);
-      setIsLoading(false);
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (isPaused) {
+      pausedTimeRef.current = Date.now() - startTimeRef.current;
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
     } else {
-      // If not found in cart, simulate API call
-      setTimeout(() => {
-        setOrder({
-          id: orderId || 'DEMO-1234',
-          date: new Date().toISOString(),
-          status: 'shipped',
-          items: [
-            {
-              id: 1,
-              title: 'Quantum Processor X9000',
-              price: 299.99,
-              quantity: 1,
-              subtotal: 299.99,
-              image: 'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-            }
-          ],
-          shipping: 15.00,
-          tax: 24.00,
-          total: 338.99,
-          shippingAddress: {
-            name: 'Demo User',
-            street: '1234 Future Avenue',
-            city: 'Tech City',
-            zipcode: '10101',
-            country: 'US'
-          },
-          origin: 'SG'
-        });
-        setIsLoading(false);
-      }, 1000);
+      startTimeRef.current = Date.now() - pausedTimeRef.current;
+      if (!animationRef.current && !isComplete) {
+        animate();
+      }
     }
-  }, [orderId, state.orders]);
+  }, [isPaused]);
   
-  if (isLoading) {
-    return React.createElement('div', { className: 'min-h-screen pt-20 px-4' },
-      React.createElement('div', { className: 'container mx-auto py-8' },
-        React.createElement('div', { className: 'glass p-8 rounded-xl animate-pulse' },
-          React.createElement('div', { className: 'h-[60vh] bg-dark-100 rounded-lg mb-6' }),
-          React.createElement('div', { className: 'h-8 bg-dark-100 rounded mb-4 w-1/3' }),
-          React.createElement('div', { className: 'h-4 bg-dark-100 rounded mb-2 w-1/4' }),
-          React.createElement('div', { className: 'h-4 bg-dark-100 rounded mb-2 w-1/2' }),
-          React.createElement('div', { className: 'h-4 bg-dark-100 rounded w-1/3' })
-        )
-      )
-    );
-  }
+  const animate = () => {
+    if (isComplete) return;
+    
+    const currentTime = Date.now();
+    const elapsedSeconds = (currentTime - startTimeRef.current) / 1000;
+    const newProgress = Math.min((elapsedSeconds / totalDuration) * 100, 100);
+    
+    setProgress(newProgress);
+    
+    if (newProgress < (stageDurations.warehouse / totalDuration) * 100) {
+      setStage('warehouse');
+      setZoomLevel(1.2);
+      setCameraPosition([10, 15, 20]);
+      setCameraTarget([5, 0, 0]);
+    } else if (newProgress < ((stageDurations.warehouse + stageDurations.transit) / totalDuration) * 100) {
+      setStage('transit');
+      setZoomLevel(0.8);
+      setCameraPosition([0, 25, 35]);
+      setCameraTarget([0, 0, 0]);
+    } else if (newProgress < 100) {
+      setStage('delivery');
+      setZoomLevel(1.5);
+      setCameraPosition([-10, 10, 15]);
+      setCameraTarget([-5, 0, 0]);
+    } else {
+      setStage('delivered');
+      setIsComplete(true);
+      setZoomLevel(1);
+      setCameraPosition([0, 20, 30]);
+      setCameraTarget([0, 0, 0]);
+    }
+    
+    if (newProgress < 100) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+  };
   
-  return React.createElement('div', { className: 'min-h-screen pt-20 px-4' },
-    React.createElement('div', { className: 'container mx-auto py-8' },
-      React.createElement('div', { className: 'mb-6' },
-        React.createElement(Link, {
-          to: orderId === 'demo' ? '/' : '/profile',
-          className: 'inline-flex items-center text-gray-400 hover:text-neon-cyan transition-colors'
-        },
-          React.createElement(ArrowLeft, { className: 'w-4 h-4 mr-1' }),
-          orderId === 'demo' ? 'Back to Home' : 'Back to Orders'
-        )
-      ),
-      
-      React.createElement(motion.div, {
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.5 }
-      },
-        React.createElement('h1', { className: 'text-3xl font-display font-bold neon-text-cyan mb-6' },
-          t('delivery.title')
-        ),
-        
-        React.createElement('div', { className: 'glass p-4 rounded-xl mb-8' },
-          React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4 text-center' },
-            React.createElement('div', { className: 'p-4' },
-              React.createElement('p', { className: 'text-gray-400 mb-1' }, t('delivery.orderId')),
-              React.createElement('p', { className: 'font-bold text-neon-cyan' }, order.id)
-            ),
-            React.createElement('div', { className: 'p-4' },
-              React.createElement('p', { className: 'text-gray-400 mb-1' }, t('delivery.origin')),
-              React.createElement('p', { className: 'font-bold' },
-                React.createElement('span', { className: 'inline-flex items-center' },
-                  React.createElement(Map, { className: 'w-4 h-4 mr-1' }),
-                  `${order.origin || 'SG'} (Singapore)`
-                )
-              )
-            ),
-            React.createElement('div', { className: 'p-4' },
-              React.createElement('p', { className: 'text-gray-400 mb-1' }, t('delivery.destination')),
-              React.createElement('p', { className: 'font-bold' },
-                React.createElement('span', { className: 'inline-flex items-center' },
-                  React.createElement(Map, { className: 'w-4 h-4 mr-1' }),
-                  `${order.shippingAddress.country} (${order.shippingAddress.city})`
-                )
-              )
-            )
-          )
-        ),
-        
-        React.createElement('div', { className: 'mb-8' },
-          React.createElement(DeliveryTracker, {
-            orderId: order.id,
-            originCountry: order.origin || 'SG',
-            destinationCountry: order.shippingAddress.country
-          })
-        ),
-        
-        React.createElement('div', { className: 'grid grid-cols-1 lg:grid-cols-3 gap-8' },
-          React.createElement('div', { className: 'lg:col-span-2' },
-            React.createElement('h2', { className: 'text-xl font-display font-bold mb-4' },
-              'Order Items'
-            ),
+  const handleReset = () => {
+    setStage('warehouse');
+    setProgress(0);
+    setIsPaused(false);
+    setIsComplete(false);
+    setZoomLevel(1);
+    setCameraPosition([0, 20, 30]);
+    setCameraTarget([0, 0, 0]);
+    
+    startTimeRef.current = Date.now();
+    pausedTimeRef.current = 0;
+    
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    
+    animate();
+  };
+  
+  const handlePlayPause = () => {
+    setIsPaused(!isPaused);
+  };
+
+  return (
+    <div className="min-h-screen pt-20 px-4">
+      <div className="container mx-auto py-8">
+        <div className="glass rounded-xl overflow-hidden">
+          <div className="h-[70vh] relative">
+            <Canvas shadows>
+              <color attach="background" args={['#050505']} />
+              <fog attach="fog" args={['#050505', 20, 90]} />
+              <ambientLight intensity={0.1} />
+              <directionalLight
+                position={[10, 20, 15]}
+                intensity={2}
+                castShadow
+                shadow-mapSize={[1024, 1024]}
+              />
+              <PerspectiveCamera
+                makeDefault
+                position={cameraPosition}
+                fov={45}
+                near={0.1}
+                far={1000}
+              />
+              <OrbitControls
+                enableZoom={false}
+                enablePan={false}
+                enableRotate={!isComplete}
+                target={cameraTarget}
+              />
+              <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+              <Globe />
+              <RouteLines
+                origin={demoDelivery.origin}
+                destination={demoDelivery.destination}
+                progress={progress}
+                totalDuration={totalDuration}
+                stageDurations={stageDurations}
+              />
+              <Delivery
+                stage={stage}
+                progress={progress}
+                origin={demoDelivery.origin}
+                destination={demoDelivery.destination}
+              />
+            </Canvas>
             
-            React.createElement('div', { className: 'glass rounded-xl overflow-hidden' },
-              order.items.map((item, index) => 
-                React.createElement('div', {
-                  key: index,
-                  className: `p-4 flex items-center ${
-                    index < order.items.length - 1 ? 'border-b border-dark-100' : ''
-                  }`
-                },
-                  React.createElement('div', { className: 'w-16 h-16 rounded overflow-hidden mr-4 flex-shrink-0' },
-                    React.createElement('img', {
-                      src: item.image || `https://picsum.photos/seed/${item.id}/200/200`,
-                      alt: item.title,
-                      className: 'w-full h-full object-cover'
-                    })
-                  ),
-                  React.createElement('div', { className: 'flex-grow' },
-                    React.createElement('h3', { className: 'font-medium' }, item.title),
-                    React.createElement('div', { className: 'flex justify-between text-sm text-gray-400 mt-1' },
-                      React.createElement('p', null, `Qty: ${item.quantity}`),
-                      React.createElement('p', null, `$${item.price.toFixed(2)}`)
-                    )
-                  )
-                )
-              )
-            )
-          ),
-          
-          React.createElement('div', null,
-            React.createElement('h2', { className: 'text-xl font-display font-bold mb-4' },
-              'Shipping Details'
-            ),
-            
-            React.createElement('div', { className: 'glass rounded-xl overflow-hidden p-4 mb-6' },
-              React.createElement('div', { className: 'flex items-start mb-4' },
-                React.createElement(Package, { className: 'w-5 h-5 text-neon-cyan mr-2 mt-0.5' }),
-                React.createElement('div', null,
-                  React.createElement('p', { className: 'font-bold' }, order.shippingAddress.name),
-                  React.createElement('p', { className: 'text-gray-400 text-sm' }, order.shippingAddress.street),
-                  React.createElement('p', { className: 'text-gray-400 text-sm' },
-                    `${order.shippingAddress.city}, ${order.shippingAddress.zipcode}`
-                  ),
-                  React.createElement('p', { className: 'text-gray-400 text-sm' }, order.shippingAddress.country)
-                )
-              ),
-              
-              React.createElement('div', { className: 'border-t border-dark-100 pt-4' },
-                React.createElement('p', { className: 'text-sm text-gray-400 mb-1' }, 'Estimated Delivery'),
-                React.createElement('p', { className: 'font-bold' }, '3-5 Business Days')
-              )
-            ),
-            
-            React.createElement('h2', { className: 'text-xl font-display font-bold mb-4' },
-              'Order Summary'
-            ),
-            
-            React.createElement('div', { className: 'glass rounded-xl overflow-hidden p-4' },
-              React.createElement('div', { className: 'flex justify-between mb-2' },
-                React.createElement('p', { className: 'text-gray-400' }, 'Subtotal'),
-                React.createElement('p', null, `$${(order.total - order.shipping - order.tax).toFixed(2)}`)
-              ),
-              React.createElement('div', { className: 'flex justify-between mb-2' },
-                React.createElement('p', { className: 'text-gray-400' }, 'Shipping'),
-                React.createElement('p', null, `$${order.shipping.toFixed(2)}`)
-              ),
-              React.createElement('div', { className: 'flex justify-between mb-4' },
-                React.createElement('p', { className: 'text-gray-400' }, 'Tax'),
-                React.createElement('p', null, `$${order.tax.toFixed(2)}`)
-              ),
-              React.createElement('div', { className: 'flex justify-between border-t border-dark-100 pt-3 font-bold' },
-                React.createElement('p', null, 'Total'),
-                React.createElement('p', { className: 'text-neon-cyan' }, `$${order.total.toFixed(2)}`)
-              )
-            )
-          )
-        )
-      )
-    )
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={handlePlayPause}
+                    className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    {isPaused ? <Play size={20} /> : <Pause size={20} />}
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    <RotateCcw size={20} />
+                  </button>
+                </div>
+                <div className="text-sm text-gray-400">
+                  {t(`delivery.stages.${stage}`)}
+                </div>
+              </div>
+              <div className="w-full h-2 bg-dark-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-neon-cyan transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
